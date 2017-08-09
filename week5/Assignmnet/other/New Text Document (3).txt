@@ -1,0 +1,157 @@
+-- Note that these examples use SS prefixed before table names to avoid conflicts with
+-- other tables with the same Oracle schema.
+
+-- Drop tables
+
+DROP TABLE SSSales;
+
+DROP TABLE SSCustomer;
+
+DROP TABLE SSItem;
+
+DROP TABLE SSStore;
+
+DROP TABLE SSDivision;
+
+DROP TABLE SSTimeDim;
+
+
+
+CREATE TABLE SSCustomer
+
+( 	CustId 	        CHAR(8) NOT NULL,
+
+  	CustName	varchar(30) NOT NULL,
+
+        CustPhone    	varchar(15) NOT NULL,
+
+	CustStreet	varchar(50) NOT NULL,
+
+	CustCity	varchar(30) NOT NULL,
+
+   	CustState	varchar(20) NOT NULL,
+
+   	CustZip		varchar(10) NOT NULL,
+
+	CustNation	varchar(20) NOT NULL,
+
+ CONSTRAINT PKSSCustomer PRIMARY KEY (CustId)  );
+
+
+
+
+CREATE TABLE SSDivision
+
+( 	DivId 	 	CHAR(8) NOT NULL,
+
+	DivName		varchar(50) NOT NULL,
+
+  	DivManager	varchar(30) NOT NULL,
+
+ CONSTRAINT PKSSDivision PRIMARY KEY (DivId) );
+
+
+
+
+CREATE TABLE SSStore
+
+( 	StoreId 	CHAR(8) NOT NULL,
+
+	DivId		CHAR(8) NOT NULL,
+
+  	StoreManager	varchar(30) NOT NULL,
+
+	StoreStreet	varchar(50) NOT NULL,
+
+	StoreCity	varchar(30) NOT NULL,
+
+   	StoreState	varchar(20) NOT NULL,
+
+   	StoreZip	varchar(10) NOT NULL,
+
+	StoreNation	varchar(20) NOT NULL,
+
+ CONSTRAINT PKSSStore PRIMARY KEY (StoreId),
+
+ CONSTRAINT FKSSDivId FOREIGN KEY (DivId) REFERENCES SSDivision (DivId) );
+
+
+
+
+CREATE TABLE SSItem
+
+( 	ItemId 	   	CHAR(8) NOT NULL,
+
+  	ItemName	varchar(30) NOT NULL,
+
+	ItemBrand	varchar(30) NOT NULL,
+
+   	ItemCategory	varchar(30) NOT NULL,
+
+  	ItemUnitPrice	DECIMAL(12,2) NOT NULL,
+
+CONSTRAINT PKSSItem PRIMARY KEY (ItemId) );
+
+
+-- AUTO_INCREMENT is used in MySQL to make a column generate a sequence number
+-- It starts with 1 and increment by 1 every time
+-- NULL should be used in the value when using INSERT
+
+CREATE TABLE SSTimeDim
+
+( 	TimeNo 	        INTEGER NOT NULL AUTO_INCREMENT,
+
+  	TimeDay		INTEGER NOT NULL,
+
+  	TimeMonth	INTEGER NOT NULL,
+
+  	TimeQuarter	INTEGER NOT NULL,
+
+  	TimeYear	INTEGER NOT NULL,
+
+  	TimeDayofWeek	INTEGER NOT NULL,
+
+  	TimeFiscalYear	INTEGER NOT NULL,
+
+ CONSTRAINT PKSSTime PRIMARY KEY (TimeNo),
+
+ CONSTRAINT SSTimeDay1 CHECK (TimeDay BETWEEN 1 AND 31),
+
+ CONSTRAINT SSTimeMonth1 CHECK (TimeMonth BETWEEN 1 AND 12),
+
+ CONSTRAINT SSTimeQuarter1 CHECK (TimeQuarter BETWEEN 1 AND 4),
+
+ CONSTRAINT SSTimeDayOfWeek1 CHECK (TimeDayOfWeek BETWEEN 1 AND 7) );
+
+
+-- AUTO_INCREMENT is used in MySQL to make a column generate a sequence number
+-- It starts with 1 and increment with 1 every time
+-- NULL should be used in the value when using INSERT
+
+CREATE TABLE SSSales
+
+( 	SalesNo 	INTEGER NOT NULL AUTO_INCREMENT,
+
+  	SalesUnits	INTEGER NOT NULL,
+
+        SalesDollar    	DECIMAL(12,2) NOT NULL,
+
+	SalesCost	DECIMAL(12,2) NOT NULL,
+
+	CustId		CHAR(8) NOT NULL,
+
+	ItemId		CHAR(8) NOT NULL,
+
+	StoreId		CHAR(8) NOT NULL,
+
+	TimeNo		INTEGER NOT NULL,
+
+ CONSTRAINT PKSSSales PRIMARY KEY (SalesNo),
+
+ CONSTRAINT FKSSCustId FOREIGN KEY (CustId) REFERENCES SSCustomer (CustId),
+
+ CONSTRAINT FKSSItemId FOREIGN KEY (ItemId) REFERENCES SSItem (ItemId),
+
+ CONSTRAINT FKSSStoreId FOREIGN KEY (StoreId) REFERENCES SSStore (StoreId),
+
+ CONSTRAINT FKSSTimeId FOREIGN KEY (TimeNo) REFERENCES SSTimeDim (TimeNo) );
