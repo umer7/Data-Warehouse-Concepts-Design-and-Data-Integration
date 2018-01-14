@@ -2,8 +2,8 @@
 
 ** For Pentaho **
 Download 
-link 1.http://www.pentaho.com/download
-link 2.https://sourceforge.net/projects/pentaho/
+* http://www.pentaho.com/download
+* https://sourceforge.net/projects/pentaho/
 
 ** for Oracle **
 Download
