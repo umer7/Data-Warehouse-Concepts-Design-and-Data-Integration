@@ -1,4 +1,5 @@
 # Datawarehouse and Data Integration
+![Alt text](/certificate.PNG "Optional Title")
 
 ** For Pentaho **
 Download 
